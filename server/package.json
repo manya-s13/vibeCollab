@@ -5,8 +5,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.ts"
+    "dev": "nodemon --exec ts-node --loader ts-node/esm index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "db:push": "prisma db push",
+    "db:generate": "prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -14,13 +19,21 @@
   "dependencies": {
     "@prisma/client": "^6.10.1",
     "axios": "^1.10.0",
+    "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.10"
   },
   "devDependencies": {
-    "prisma": "^6.10.1"
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "prisma": "^6.10.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.8.3"
   }
 }
