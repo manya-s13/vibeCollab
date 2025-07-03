@@ -1,13 +1,9 @@
-import {Router, Request, Response} from 'express';
-import Userrouter from './usersRoutes';
+import { Router, RequestHandler } from "express";
+import {signup}  from "../controllers/authController";
 
 const router = Router();
 
-router.use('/auth', Userrouter);
-
-router.get('/health', (re: Request, res: Response)=>{
-    res.json({status: "ok", timestamp: new Date().toISOString()})
-})
-
-
+router.get("/health", (req, res) => { 
+    res.status(200).json({ status: "ok" });
+});
 export default router;
