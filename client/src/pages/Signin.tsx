@@ -12,14 +12,14 @@ const Signin = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try{
-        const response = await axios.post('http://localhost:3000/api/auth/signin', { email, password }, {
+        const response = await axios.post('http://localhost:3002/api/signin', { email, password }, {
             headers: {
               'Content-Type': 'application/json',
             },
             withCredentials: true,
           });          
 
-            if(response.status===200 && response.data.message === 'Signin successful'){
+          if(response.status===200 && response.data.message === 'Signin Successful'){
                 alert('Signin successful');
                 navigate('/');
             }else{

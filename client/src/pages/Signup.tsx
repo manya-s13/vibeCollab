@@ -14,7 +14,13 @@ const Signup = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try{
-        const response = await axios.post('http://localhost:3000/api/auth/signup', { fullname, email, password }, {withCredentials: true});
+      const response = await axios.post('http://localhost:3002/api/signup', { email, password }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });          
+
         if(response.status === 200){
             alert('signup successful'); 
             navigate('/signin');
@@ -27,7 +33,6 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-rose-50 flex items-center justify-center p-4">
-      {/* Animated background circles */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-pink-200 rounded-full opacity-20 blur-xl"></div>
         <div className="absolute bottom-1/3 right-1/3 w-40 h-40 bg-rose-200 rounded-full opacity-20 blur-xl"></div>
@@ -35,7 +40,6 @@ const Signup = () => {
       </div>
 
       <div className="max-w-md w-full relative">
-        {/* Glass effect card */}
         <div className="backdrop-blur-lg bg-white/70 rounded-3xl shadow-2xl p-8 border border-white/20">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent">
@@ -45,7 +49,6 @@ const Signup = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Name Input */}
             <div className="relative">
               <input
                 type="text"
@@ -63,7 +66,6 @@ const Signup = () => {
               ></div>
             </div>
 
-            {/* Email Input */}
             <div className="relative">
               <input
                 type="email"
@@ -81,7 +83,6 @@ const Signup = () => {
               ></div>
             </div>
 
-            {/* Password Input */}
             <div className="relative">
               <input
                 type="password"
@@ -99,7 +100,6 @@ const Signup = () => {
               ></div>
             </div>
 
-            {/* Sign Up Button */}
             <button
               type="submit"
               className="w-full relative overflow-hidden group"
@@ -111,7 +111,6 @@ const Signup = () => {
             </button>
           </form>
 
-          {/* Sign In Link */}
           <div className="mt-8 text-center">
             <p className="text-gray-500">
               Already have an account?{' '}

@@ -50,7 +50,6 @@ function setTokenCookie(res: Response, token: string): void {
     });
   }
 
-  // Helper method to clear cookie
   function clearTokenCookie(res: Response): void {
     res.cookie('authToken', '', {
       httpOnly: true,
@@ -62,35 +61,38 @@ function setTokenCookie(res: Response, token: string): void {
   }
 
 
-  export const signup = async (
-    req: Request<{}, {}, signupReq>,
+export const signup = async (
+    req:  Request,
     res: Response,
-  ): Promise<Response> => {
+  ): Promise<void> => {
         try{
-            const {email, password, name} = req.body;
+            const {email, password, name} :signupReq = req.body;
 
             if(!email || !password || !name) {
-                return res.status(400).json({ message: 'All fields are required' });
+                res.status(400).json({ message: 'All fields are required' });
+                return;
             }
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
-              return res.status(400).json({
+              res.status(400).json({
                 success: false,
                 message: 'Please provide a valid email address'
               });
+              return;
             }
       
-            // Validate password strength
             if (password.length < 6) {
-              return res.status(400).json({
+            res.status(400).json({
                 success: false,
                 message: 'Password must be at least 6 characters long'
               });
+              return;
             }
             const existingUser = await prisma.user.findUnique({where: {email}});
 
             if(existingUser){
-                return res.status(400).json({message : "user already exists"});
+                res.status(400).json({message : "user already exists"});
+                return;
             }
 
             const salt = 12;
@@ -119,31 +121,36 @@ function setTokenCookie(res: Response, token: string): void {
 
             setTokenCookie(res, token);
 
-            return res.status(201).json({message : "User craeted Successfully", data: {user}});
+            res.status(201).json({message : "User craeted Successfully", data: {user}});
+            return;
         }
         catch(error) {
             console.log('signup error:', error);
-            return res.status(500).json({message: 'Internal server error'});
+            res.status(500).json({message: 'Internal server error'});
+            return;
         }
     }
 
-    export  const  signin = async(req: Request<{}, {}, signinReq>, res: Response): Promise<Response> => {
+export  const  signin = async(req: Request, res: Response): Promise<void> => {
         try {
-            const {email, password} = req.body;
+            const {email, password}:signinReq = req.body;
             if(!email || !password) {
-                return res.status(400).json({message : "Please provide email and password"});
+                res.status(400).json({message : "Please provide email and password"});
+                return;
             }
 
             const user = await prisma.user.findUnique({
                 where:{email}
             })
             if(!user){
-                return res.status(404).json({message : "User not found"});
+                res.status(404).json({message : "User not found"});
+                return;
             }
 
             const isPasswordValid = await bcrypt.compare(password, user.password);
             if(!isPasswordValid){
-                return res.status(401).json({message : "Invalid credentials"});
+                res.status(401).json({message : "Invalid credentials"});
+                return;
             }
 
             const token = jwt.sign(
@@ -156,20 +163,23 @@ function setTokenCookie(res: Response, token: string): void {
 
             const { password: _, ...userWithoutPassword } = user;
 
-            return res.status(200).json({message : "Signin Successful", data : {user: userWithoutPassword}});
+            res.status(200).json({message : "Signin Successful", data : {user: userWithoutPassword}});
+            return;
         }
         catch(error){
             console.log("Signin Failed" , error);
-            return res.status(500).json({message : "Internal Server error"});
+            res.status(500).json({message : "Internal Server error"});
+            return;
         }
     }
 
-    export  const VerifyToken = async (req: AuthRequest, res: Response, next: NextFunction): Promise<Response | void> => {
+export  const VerifyToken = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
         try {
             const token = req.cookies.authToken;
 
             if(!token){
-                return res.status(401).json({message: "Unauthorized, No token provided"});
+                res.status(401).json({message: "Unauthorized, No token provided"});
+                return;
             }
 
             const decoded = jwt.verify(token,  process.env.JWT_SECRET!) as jwtPayLoad;
@@ -186,64 +196,76 @@ function setTokenCookie(res: Response, token: string): void {
 
             if(!user){
                 clearTokenCookie(res);
-                return res.status(404).json({message: "User not found"});
+                res.status(404).json({message: "User not found"});
+                return;
             }
 
             req.user = user;
+//             console.log("Cookies received:", req.cookies);
+//             console.log("Auth token:", req.cookies.authToken);
+
             next();
+
 
         } catch (error) {
             console.error('Token verification error:', error);
             clearTokenCookie(res);
-            return res.status(401).json({
+            res.status(401).json({
                 success: false,
                 message: 'Invalid token'
             });
+            return;
         }
     }
 
-    export const getProfile = async (req: AuthRequest, res: Response): Promise<Response> => {
+export const getProfile = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
-            return res.status(200).json({
+            res.status(200).json({
                 success: true,
                 data: {
                     user: req.user
                 }
             });
+            return;
         } catch (error) {
             console.log("Get Profile error", error);
-            return res.status(500).json({
+            res.status(500).json({
                 success: false,
                 message:" Internal server error"
             })
+            return;
         }
     }
 
 
-    export  const signOut = async (req: AuthRequest, res: Response): Promise<Response> => {
+export  const signOut = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
             clearTokenCookie(res);
-            return res.status(200).json({
+            res.status(200).json({
                 success: true,
-                message: "signed out successfully"
+                message: "signed out successfully",
             })
+            return;
         } catch (error) {
             console.log('Sign out error:', error);
-            return res.status(500).json({ message: "Internal server error"});
+            res.status(500).json({ message: "Internal server error"});
+            return;
         }
     }
 
-  export  const checkAuth = async(req: AuthRequest, res: Response) : Promise<Response> => {
+export  const checkAuth = async(req: AuthRequest, res: Response) : Promise<void> => {
         try {
-            return res.status(200).json({
+            res.status(200).json({
                 success: true,
                 message: 'User is authenticated',
                 data: {
                   user: req.user
                 }
               });
+              return;
         } catch (error) {
             console.log('Check Auth error:', error);
-            return res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" });
+            return;
         }
     }
