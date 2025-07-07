@@ -3,7 +3,7 @@ import './App.css'
 import Signin from './pages/Signin'
 import Home from './pages/Home'
 import Signup from './pages/Signup'
-import WhiteBoard from './components/WhiteBoard'
+import WhiteBoard from './components/canvas/WhiteBoard'
 
 function App() {
 
