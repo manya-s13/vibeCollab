@@ -17,14 +17,16 @@ import {
   type ActionsType,
 } from "../types";
 import { ActionBar } from "./comps/ActionBar";
-import { ControlPanel } from "./comps/ControlPanel"; 
-import { createElement } from "./utilities/createElement";
+import { ControlPanel } from "./comps/ControlPanel";
+
+import { adjustElementCoordinates } from "./utilities/adjustElementCoordinates";
+import { adjustmentRequired } from "./utilities/adjustmentRequired";
+// Renamed to avoid conflict with React's createElement
+import { createElement  } from "./utilities/createElement";
+import { cursorForPosition } from "./utilities/cursorForPosition";
 import { drawElement } from "./utilities/drawElement";
 import { getElementAtPosition } from "./utilities/getElementAtPosition";
-import { cursorForPosition } from "./utilities/cursorForPosition";
 import { resizedCoordinates } from "./utilities/resizedCoordinates";
-import { adjustmentRequired } from "./utilities/adjustmentRequired";
-import { adjustElementCoordinates } from "./utilities/adjustElementCoordinates";
 
 export default function App() {
   const initialTool: ToolsType = Tools.selection;
@@ -205,8 +207,8 @@ export default function App() {
         let selectedElement: SelectedElementType = { ...element };
 
         if (element.type === "pencil" && element.points) {
-          const xOffsets = element.points.map((point: { x: number; }) => clientX - point.x);
-          const yOffsets = element.points.map((point: { y: number; }) => clientY - point.y);
+          const xOffsets = element.points.map((point) => clientX - point.x);
+          const yOffsets = element.points.map((point) => clientY - point.y);
           selectedElement = { ...selectedElement, xOffsets, yOffsets };
         } else {
           const offsetX = clientX - selectedElement.x1;
@@ -382,6 +384,7 @@ export default function App() {
 
   return (
     <div>
+      
       <ActionBar tool={tool} setTool={setTool} />
       <ControlPanel
         undo={undo}
