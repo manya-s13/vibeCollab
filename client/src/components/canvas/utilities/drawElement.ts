@@ -7,6 +7,15 @@ export const drawElement = (
   context: CanvasRenderingContext2D,
   element: ElementType
 ) => {
+  const opacity = element.opacity || 1;
+  const strokeColor = element.strokeColor || "#000000";
+  const strokeWidth = element.strokeWidth || 1;
+  const fontSize = element.fontSize || 24;
+
+  // Save current context state
+  context.save();
+  context.globalAlpha = opacity;
+
   switch (element.type) {
     case "line":
     case "rectangle":
@@ -19,7 +28,14 @@ export const drawElement = (
       if (!element.points) {
         throw new Error("Pencil element points are undefined");
       }
-      const strokePoints = getStroke(element.points);
+      
+      const strokePoints = getStroke(element.points, {
+        size: strokeWidth,
+        thinning: 0,
+        smoothing: 0.5,
+        streamline: 0.5,
+      });
+      
       const formattedPoints: [number, number][] = strokePoints.map((point) => {
         if (point.length !== 2) {
           throw new Error(
@@ -29,12 +45,14 @@ export const drawElement = (
         return [point[0], point[1]];
       });
       const stroke = getSvgPathFromStroke(formattedPoints);
+      context.fillStyle = strokeColor;
       context.fill(new Path2D(stroke));
       break;
     }
     case "text": {
       context.textBaseline = "top";
-      context.font = "24px sans-serif";
+      context.font = `${fontSize}px sans-serif`;
+      context.fillStyle = strokeColor;
       const text = element.text || "";
       context.fillText(text, element.x1, element.y1);
       break;
@@ -42,6 +60,7 @@ export const drawElement = (
     default:
       throw new Error(`Type not recognised: ${element.type}`);
   }
+  context.restore();
 };
 
 // 🥑 source: https://www.npmjs.com/package/perfect-freehand/v/1.0.4

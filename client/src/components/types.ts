@@ -24,6 +24,11 @@ export type SelectedElementType = ElementType & {
     position?: string | null;
     points?: { x: number; y: number }[];
     text?: string;
+    strokeColor?: string;
+    fillColor?: string;
+    strokeWidth?: number;
+    opacity?: number;
+    fontSize?: number;
   };
   
   export type ActionsType =

@@ -26,6 +26,7 @@ import { cursorForPosition } from "./utilities/cursorForPosition";
 import { drawElement } from "./utilities/drawElement";
 import { getElementAtPosition } from "./utilities/getElementAtPosition";
 import { resizedCoordinates } from "./utilities/resizedCoordinates";
+import { Panel } from "./properties/Panel";
 
 export default function App() {
   const initialTool: ToolsType = Tools.selection;
@@ -39,6 +40,7 @@ export default function App() {
   const [action, setAction] = useState<ActionsType>("none");
   const [tool, setTool] = useState<ToolsType>(initialTool);
   const [selectedElement, setSelectedElement] = useState<ElementType | null>();
+  const [showProperties, setShowProperties] = useState(false);
   const [scale, setScale] = useState(1);
   const [scaleOffset, setScaleOffset] = useState({ x: 0, y: 0 });
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -132,14 +134,26 @@ export default function App() {
     x2: number,
     y2: number,
     type: ToolsType,
-    options?: { text: string }
+    options?: { text: string;
+      strokeColor?: string;
+      fillColor?: string;
+      strokeWidth?: number;
+      opacity?: number;
+      fontSize?: number;
+     }
   ) => {
     const elementsCopy = [...elements];
     switch (type) {
       case Tools.line:
       case Tools.rectangle:
         case Tools.circle: {
-        elementsCopy[id] = createElement(id, x1, y1, x2, y2, type);
+        const existingElement = elementsCopy[id];
+        elementsCopy[id] = createElement(id, x1, y1, x2, y2, type, {
+          strokeColor: options?.strokeColor || existingElement?.strokeColor,
+          fillColor: options?.fillColor || existingElement?.fillColor,
+          strokeWidth: options?.strokeWidth || existingElement?.strokeWidth,
+          opacity: options?.opacity || existingElement?.opacity,
+        });
         break;
       }
       case Tools.pencil: {
@@ -156,13 +170,22 @@ export default function App() {
         if (!context) {
           throw new Error("Could not get 2D context from canvas");
         }
-        if (!options) {
+        if (!options || !options.text) {
           throw new Error("No text options provided for text tool");
         }
+        const fontSize = options.fontSize || elementsCopy[id]?.fontSize || 24;
+        context.font = `${fontSize}px sans-serif`;
         const textWidth = context.measureText(options.text).width;
-        const textHeight = 24;
+        const textHeight = fontSize;
+        const existingElement = elementsCopy[id];
         elementsCopy[id] = {
-          ...createElement(id, x1, y1, x1 + textWidth, y1 + textHeight, type),
+          ...createElement(id, x1, y1, x1 + textWidth, y1 + textHeight, type, {
+            strokeColor: options?.strokeColor || existingElement?.strokeColor,
+            fillColor: options?.fillColor || existingElement?.fillColor,
+            strokeWidth: options?.strokeWidth || existingElement?.strokeWidth,
+            opacity: options?.opacity || existingElement?.opacity,
+            fontSize: fontSize,
+          }),
           text: options.text,
         };
         break;
@@ -217,6 +240,7 @@ export default function App() {
         }
 
         setSelectedElement(selectedElement);
+        setShowProperties(true);
         setElements((prevState) => prevState);
 
         if (element.position === "inside") {
@@ -354,7 +378,8 @@ export default function App() {
       if (
         selectedElement.type === "text" &&
         clientX - offsetX === selectedElement.x1 &&
-        clientY - offsetY === selectedElement.y1
+        clientY - offsetY === selectedElement.y1 && 
+        action !== "moving" && action !== "resizing"
       ) {
         setAction("writing");
         return;
@@ -370,7 +395,11 @@ export default function App() {
     }
 
     setAction("none");
-    setSelectedElement(null);
+
+    if (action === "drawing") {
+      setSelectedElement(null);
+      setShowProperties(false);
+    }    
   };
 
   const handleBlur = (event: React.FocusEvent<HTMLTextAreaElement>) => {
@@ -392,6 +421,48 @@ export default function App() {
     setScale((prevState) => Math.min(Math.max(prevState + delta, 0.1), 20));
   };
 
+  const handleUpdateElementProperties = (id: number, properties: Partial<ElementType>) => {
+    const generator = rough.generator();
+    const elementsCopy = [...elements];
+    const element = elementsCopy[id];
+    if (element) {
+      // Update the element properties
+      Object.assign(element, properties);
+      
+      // Recreate the rough element with new properties if needed
+      if (element.type !== Tools.pencil && element.type !== Tools.text) {
+        const roughOptions = {
+          stroke: element.strokeColor,
+          fill: element.fillColor === "transparent" ? undefined : element.fillColor,
+          strokeWidth: element.strokeWidth,
+        };
+
+        switch (element.type) {
+          case Tools.line:
+            element.roughElement = generator.line(element.x1, element.y1, element.x2, element.y2, roughOptions);
+            break;
+          case Tools.rectangle:
+            element.roughElement = generator.rectangle(element.x1, element.y1, element.x2 - element.x1, element.y2 - element.y1, roughOptions);
+            break;
+          case Tools.circle:
+            const centerX = (element.x1 + element.x2) / 2;
+            const centerY = (element.y1 + element.y2) / 2;
+            const radius = Math.sqrt(Math.pow(element.x2 - element.x1, 2) + Math.pow(element.y2 - element.y1, 2)) / 2;
+            element.roughElement = generator.circle(centerX, centerY, radius * 2, roughOptions);
+            break;
+        }
+      }
+      
+      setElements(elementsCopy, true);
+      setSelectedElement(element);
+    }
+  };
+
+  const handleCloseProperties = () => {
+    setShowProperties(false);
+    setSelectedElement(null);
+  };
+
   return (
     <div className="relative w-full h-screen bg-gray-50 overflow-hidden">
       
@@ -403,6 +474,13 @@ export default function App() {
         scale={scale}
         setScale={setScale}
       />
+      {showProperties && selectedElement && (
+        <Panel
+          selectedElement={selectedElement}
+          onUpdateElement={handleUpdateElementProperties}
+          onClose={handleCloseProperties}
+        />
+      )}
       {action === "writing" ? (
         <textarea
           ref={textAreaRef}
