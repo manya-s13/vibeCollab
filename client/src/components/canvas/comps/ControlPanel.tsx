@@ -1,11 +1,11 @@
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { PiMinus, PiPlus } from "react-icons/pi";
-import { FiGithub } from "react-icons/fi";
 import {
   HiOutlineArrowUturnLeft,
   HiOutlineArrowUturnRight,
 } from "react-icons/hi2";
+import { Github } from "lucide-react";
 
 type ControlPanelProps = {
   undo: () => void;
@@ -85,12 +85,11 @@ export function ControlPanel({
       {/* Attribution Link - Bottom Left */}
       <a 
         className="fixed bottom-4 left-4 z-50 flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-lg border border-gray-200 text-gray-600 hover:text-gray-800 transition-all duration-200 hover:shadow-xl" 
-        href="https://github.com/mirayatech" 
+        href="https://github.com/manya-s13/vibeCollab.git" 
         target="_blank"
         rel="noopener noreferrer"
       >
-        <FiGithub className="w-4 h-4" />
-        <span className="text-sm font-medium">Created by Miraya</span>
+        <span className="text-sm font-medium"><Github /></span>
       </a>
     </>
   );

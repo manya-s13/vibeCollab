@@ -2,8 +2,7 @@ import getStroke from "perfect-freehand";
 import { type ElementType } from "../../types";
 
 export const drawElement = (
-  // TODO: add type
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  
   roughCanvas: any,
   context: CanvasRenderingContext2D,
   element: ElementType

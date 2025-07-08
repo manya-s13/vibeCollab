@@ -17,8 +17,7 @@ export type SelectedElementType = ElementType & {
     x2: number;
     y2: number;
     type: ToolsType;
-    // TODO: add type
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
     roughElement?: any;
     offsetX?: number;
     offsetY?: number;
@@ -42,6 +41,8 @@ export type SelectedElementType = ElementType & {
     line: "line",
     pencil: "pencil",
     text: "text",
+    circle: "circle",
+    erase: "erase"
   };
   
   export type ToolsType = (typeof Tools)[keyof typeof Tools];

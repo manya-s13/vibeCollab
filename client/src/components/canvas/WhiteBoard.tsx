@@ -21,7 +21,6 @@ import { ControlPanel } from "./comps/ControlPanel";
 
 import { adjustElementCoordinates } from "./utilities/adjustElementCoordinates";
 import { adjustmentRequired } from "./utilities/adjustmentRequired";
-// Renamed to avoid conflict with React's createElement
 import { createElement  } from "./utilities/createElement";
 import { cursorForPosition } from "./utilities/cursorForPosition";
 import { drawElement } from "./utilities/drawElement";
@@ -295,7 +294,6 @@ export default function App() {
         const safeOffsetY = offsetY ?? 0;
         const newX1 = clientX - safeOffsetX;
         const newY1 = clientY - safeOffsetY;
-        // 🫐 Calculate the new position for x2 and y2 based on the original size
         const newX2 = newX1 + (x2 - x1);
         const newY2 = newY1 + (y2 - y1);
         const options =
