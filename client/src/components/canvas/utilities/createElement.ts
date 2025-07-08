@@ -20,6 +20,16 @@ export const createElement = (
           : generator.rectangle(x1, y1, x2 - x1, y2 - y1);
       return { id, x1, y1, x2, y2, type, roughElement };
     }
+
+    case Tools.circle: {
+      const roughElement = generator.circle(
+        (x1 + x2) / 2,
+        (y1 + y2) / 2,
+        Math.abs(x2 - x1)
+      );
+      return { id, x1, y1, x2, y2, type, roughElement };
+    }
+    
     case Tools.pencil: {
       const defaultRoughElement = null;
       return {

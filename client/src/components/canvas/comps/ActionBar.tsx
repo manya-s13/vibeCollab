@@ -1,9 +1,8 @@
 import { Tools, type ToolsType } from "../../types";
 
-import { LuPencil } from "react-icons/lu";
-import { FiMinus, FiMousePointer, FiSquare } from "react-icons/fi";
+import { LuEraser, LuPencil } from "react-icons/lu";
+import { FiCircle, FiMinus, FiMousePointer, FiSquare } from "react-icons/fi";
 import { IoHandRightOutline, IoText } from "react-icons/io5";
-
 
 type ActionBarProps = {
   tool: ToolsType;
@@ -36,9 +35,11 @@ export function ActionBar({ tool, setTool }: ActionBarProps) {
               {t === "pan" && <IoHandRightOutline />}
               {t === "selection" && <FiMousePointer />}
               {t === "rectangle" && <FiSquare />}
+              {t === "circle" && <FiCircle />}
               {t === "line" && <FiMinus />}
               {t === "pencil" && <LuPencil />}
               {t === "text" && <IoText />}
+              {t === "eraser" && <LuEraser />}
             </div>
             
             {/* <span className="text-xs font-medium">{index + 1}</span> */}

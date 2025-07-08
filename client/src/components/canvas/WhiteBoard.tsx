@@ -85,7 +85,7 @@ export default function App() {
           } else {
             undo();
           }
-        } else if (event.key === "y") {
+        } else if (event.key === "y" ) {
           redo();
         }
       }
@@ -137,7 +137,8 @@ export default function App() {
     const elementsCopy = [...elements];
     switch (type) {
       case Tools.line:
-      case Tools.rectangle: {
+      case Tools.rectangle:
+        case Tools.circle: {
         elementsCopy[id] = createElement(id, x1, y1, x2, y2, type);
         break;
       }
@@ -224,7 +225,15 @@ export default function App() {
           setAction("resizing");
         }
       }
-    } else {
+    } 
+    else if (tool === Tools.eraser) {
+      const element = getElementAtPosition(clientX, clientY, elements);
+      if (element) {
+        const newElements = elements.filter((el) => el.id !== element.id);
+        setElements(newElements);
+      }
+    }
+    else {
       const id = elements.length;
       const newElement = createElement(
         id,
@@ -263,6 +272,9 @@ export default function App() {
       } else {
         (event.target as HTMLElement).style.cursor = "default";
       }
+    }
+    else if (tool === Tools.eraser) {
+      (event.target as HTMLElement).style.cursor = "crosshair";
     }
 
     if (action === "drawing") {
@@ -395,7 +407,7 @@ export default function App() {
         <textarea
           ref={textAreaRef}
           onBlur={handleBlur}
-          className="absolute border-2 border-blue-400 rounded-md p-2 bg-white shadow-lg resize-none outline-none z-50"
+          className="absolute border-pink-400  bg-white  resize-none outline-none z-50"
           style={{
             top: selectedElement
               ? (selectedElement.y1 - 2) * scale +

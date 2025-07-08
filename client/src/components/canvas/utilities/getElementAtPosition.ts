@@ -23,6 +23,20 @@ const positionWithinElement = (x: number, y: number, element: ElementType) => {
       const end = nearPoint(x, y, x2, y2, "end");
       return start || end || on;
     }
+    case Tools.circle: {
+      const centerX = (x1 + x2) / 2;
+      const centerY = (y1 + y2) / 2;
+      const radius = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) / 2;
+      const distanceFromCenter = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+      
+      // Check if point is inside circle
+      const inside = distanceFromCenter <= radius ? "inside" : null;
+      
+      // Check if point is near the circle edge (for resizing)
+      const onEdge = Math.abs(distanceFromCenter - radius) <= 5 ? "edge" : null;
+      
+      return onEdge || inside;
+    }
     case Tools.rectangle: {
       const topLeft = nearPoint(x, y, x1, y1, "topLeft");
       const topRight = nearPoint(x, y, x2, y1, "topRight");
@@ -31,6 +45,7 @@ const positionWithinElement = (x: number, y: number, element: ElementType) => {
       const inside = x >= x1 && x <= x2 && y >= y1 && y <= y2 ? "inside" : null;
       return topLeft || topRight || bottomLeft || bottomRight || inside;
     }
+
     case Tools.pencil: {
       const betweenAnyPoint = element.points!.some((point, index) => {
         const nextPoint = element.points![index + 1];

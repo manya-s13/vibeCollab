@@ -38,11 +38,11 @@ export type SelectedElementType = ElementType & {
     pan: "pan",
     selection: "selection",
     rectangle: "rectangle",
+    circle: "circle",
     line: "line",
     pencil: "pencil",
-    text: "text",
-    circle: "circle",
-    erase: "erase"
+    text: "text",  
+    eraser: "eraser"
   };
   
   export type ToolsType = (typeof Tools)[keyof typeof Tools];

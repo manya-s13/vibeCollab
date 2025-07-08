@@ -1,4 +1,4 @@
 import { type ToolsType } from "../../types";
 
 export const adjustmentRequired = (type: ToolsType) =>
-  ["line", "rectangle"].includes(type);
+  ["line", "rectangle", "circle"].includes(type);

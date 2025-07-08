@@ -10,7 +10,10 @@ export const drawElement = (
   switch (element.type) {
     case "line":
     case "rectangle":
-      roughCanvas.draw(element.roughElement);
+      case "circle":
+        if (element.roughElement) {
+          roughCanvas.draw(element.roughElement);
+        }
       break;
     case "pencil": {
       if (!element.points) {
