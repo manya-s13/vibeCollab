@@ -383,7 +383,7 @@ export default function App() {
   };
 
   return (
-    <div>
+    <div className="relative w-full h-screen bg-gray-50 overflow-hidden">
       
       <ActionBar tool={tool} setTool={setTool} />
       <ControlPanel
@@ -397,7 +397,7 @@ export default function App() {
         <textarea
           ref={textAreaRef}
           onBlur={handleBlur}
-          className="textArea"
+          className="absolute border-2 border-blue-400 rounded-md p-2 bg-white shadow-lg resize-none outline-none z-50"
           style={{
             top: selectedElement
               ? (selectedElement.y1 - 2) * scale +
@@ -418,7 +418,7 @@ export default function App() {
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        style={{ position: "absolute", zIndex: 1 }}
+        className="absolute z-10 cursor-crosshair bg-white border border-gray-200 shadow-inner"
       />
     </div>
   );
