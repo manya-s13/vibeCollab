@@ -12,7 +12,7 @@ function Header() {
   };
 
   const handleSignUp = () => {
-    navigate('/signup');
+    navigate('/wb');
   }
 
   useEffect(() => {

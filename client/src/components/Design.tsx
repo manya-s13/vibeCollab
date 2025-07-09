@@ -1,4 +1,4 @@
-import { Video, Mic, MonitorUp, Brush } from 'lucide-react'
+import { Video, Mic, MonitorUp, Brush, Shapes, Users, Users2, Palette } from 'lucide-react'
 
 function Design() {
 
@@ -35,9 +35,9 @@ function Design() {
                 ))}
             </div>
            <div className='flex items-center justify-around text-black pt-5 p-3'>
-           <Video className='hover:scale-115' />
-            <Mic className='hover:scale-115' />
-            <MonitorUp className='hover:scale-115' />
+           <Shapes className='hover:scale-115' />
+            <Users2 className='hover:scale-115' />
+            <Palette className='hover:scale-115' />
             <Brush className='hover:scale-115' />
            </div>
         </div>

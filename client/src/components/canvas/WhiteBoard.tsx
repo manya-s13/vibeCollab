@@ -150,7 +150,7 @@ export default function App() {
         const existingElement = elementsCopy[id];
         elementsCopy[id] = createElement(id, x1, y1, x2, y2, type, {
           strokeColor: options?.strokeColor || existingElement?.strokeColor,
-          fillColor: options?.fillColor || existingElement?.fillColor,
+          fillColor: options?.fillColor || existingElement?.fillColor ,
           strokeWidth: options?.strokeWidth || existingElement?.strokeWidth,
           opacity: options?.opacity || existingElement?.opacity,
         });

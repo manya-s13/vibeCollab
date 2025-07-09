@@ -32,7 +32,7 @@ export const drawElement = (
       const strokePoints = getStroke(element.points, {
         size: strokeWidth,
         thinning: 0,
-        smoothing: 0.5,
+        smoothing: 1,
         streamline: 0.5,
       });
       

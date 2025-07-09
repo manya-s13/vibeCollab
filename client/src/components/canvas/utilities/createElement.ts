@@ -14,12 +14,14 @@ export const createElement = (
     strokeWidth?: number;
     opacity?: number;
     fontSize?: number;
+    fillStyle?: "solid" ;
   }
 ): ElementType => {
   const generator = rough.generator();
   const defaultOptions = {
     strokeColor: "#000000",
     fillColor: "transparent",
+    fillStyle: "solid",
     strokeWidth: 1,
     opacity: 1,
     fontSize: 24,
@@ -30,6 +32,7 @@ export const createElement = (
     stroke: defaultOptions.strokeColor,
     fill: defaultOptions.fillColor === "transparent" ? undefined : defaultOptions.fillColor,
     strokeWidth: defaultOptions.strokeWidth,
+    roughness: 0.5,
   };
 
   switch (type) {

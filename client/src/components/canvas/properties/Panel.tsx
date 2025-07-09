@@ -44,7 +44,7 @@ export function Panel({ selectedElement, onUpdateElement, onClose }: PropertiesP
   };
 
   return (
-    <div className="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 bg-white rounded-xl shadow-lg border border-gray-200 w-80 max-h-[80vh] overflow-y-auto">
+    <div className="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 bg-white rounded-xl shadow-lg border border-gray-200 w-70 max-h-[90vh] overflow-y-auto">
       <div className="p-4 border-b border-gray-200 flex items-center justify-between">
         <h3 className="text-lg font-semibold text-gray-800">
           {getElementTypeName(selectedElement.type)} Properties
@@ -128,19 +128,35 @@ export function Panel({ selectedElement, onUpdateElement, onClose }: PropertiesP
         {/* Stroke Width */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
-            Stroke Width: `${strokeWidth}px`
+            Stroke Width: {strokeWidth}
           </label>
           <input
             type="range"
             min="1"
             max="20"
             value={strokeWidth}
+            
             onChange={(e) => {
               const value = parseInt(e.target.value);
               setStrokeWidth(value);
               handlePropertyChange("strokeWidth", value);
             }}
-            className="w-full"
+            className="w-full h-1 bg-pink-200 rounded-lg appearance-none cursor-pointer dark:bg-pink-200
+    [&::-webkit-slider-thumb]:appearance-none 
+    [&::-webkit-slider-thumb]:h-4 
+    [&::-webkit-slider-thumb]:w-4 
+    [&::-webkit-slider-thumb]:rounded-full 
+    [&::-webkit-slider-thumb]:bg-pink-400 
+    [&::-webkit-slider-thumb]:border-none 
+    [&::-webkit-slider-thumb]:shadow-md 
+    [&::-webkit-slider-thumb]:transition-all 
+    [&::-webkit-slider-thumb]:duration-200
+    [&::-moz-range-thumb]:bg-pink-400
+    [&::-moz-range-thumb]:h-4 
+    [&::-moz-range-thumb]:w-4 
+    [&::-moz-range-thumb]:rounded-full 
+    [&::-moz-range-thumb]:border-none 
+    [&::-moz-range-thumb]:cursor-pointer"
           />
           <input
             type="number"
@@ -172,7 +188,22 @@ export function Panel({ selectedElement, onUpdateElement, onClose }: PropertiesP
               setOpacity(value);
               handlePropertyChange("opacity", value);
             }}
-            className="w-full"
+            className="w-full h-1 bg-pink-200 rounded-lg appearance-none cursor-pointer dark:bg-pink-200
+    [&::-webkit-slider-thumb]:appearance-none 
+    [&::-webkit-slider-thumb]:h-4 
+    [&::-webkit-slider-thumb]:w-4 
+    [&::-webkit-slider-thumb]:rounded-full 
+    [&::-webkit-slider-thumb]:bg-pink-400 
+    [&::-webkit-slider-thumb]:border-none 
+    [&::-webkit-slider-thumb]:shadow-md 
+    [&::-webkit-slider-thumb]:transition-all 
+    [&::-webkit-slider-thumb]:duration-200
+    [&::-moz-range-thumb]:bg-pink-400
+    [&::-moz-range-thumb]:h-4 
+    [&::-moz-range-thumb]:w-4 
+    [&::-moz-range-thumb]:rounded-full 
+    [&::-moz-range-thumb]:border-none 
+    [&::-moz-range-thumb]:cursor-pointer"
           />
         </div>
 
@@ -208,17 +239,6 @@ export function Panel({ selectedElement, onUpdateElement, onClose }: PropertiesP
             />
           </div>
         )}
-
-        {/* Element Info */}
-        <div className="pt-4 border-t border-gray-200">
-          <h4 className="text-sm font-medium text-gray-700 mb-2">Element Info</h4>
-          <div className="text-xs text-gray-500 space-y-1">
-            <div>ID: {selectedElement.id}</div>
-            <div>Type: {selectedElement.type}</div>
-            <div>Position: ({Math.round(selectedElement.x1)}, {Math.round(selectedElement.y1)})</div>
-            <div>Size: {Math.round(Math.abs(selectedElement.x2 - selectedElement.x1))} × {Math.round(Math.abs(selectedElement.y2 - selectedElement.y1))}</div>
-          </div>
-        </div>
       </div>
     </div>
   );

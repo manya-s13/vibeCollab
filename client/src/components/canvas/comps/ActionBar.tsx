@@ -17,9 +17,9 @@ export function ActionBar({ tool, setTool }: ActionBarProps) {
           <div
             className={`relative group cursor-pointer transition-all duration-200 ${
               tool === t 
-                ? "bg-pink-400 text-white shadow-md scale-105" 
+                ? "bg-pink-200 text-black shadow-md scale-105" 
                 : "bg-gray-50 text-gray-700 hover:bg-gray-100 hover:scale-105"
-            } rounded-lg p-3 flex flex-col items-center justify-center min-w-[50px] h-12`}
+            } rounded-lg p-3 flex flex-col items-center justify-center min-w-[40px] h-8`}
             key={t}
             onClick={() => setTool(t)}
           >

@@ -26,6 +26,7 @@ export type SelectedElementType = ElementType & {
     text?: string;
     strokeColor?: string;
     fillColor?: string;
+    fillStyle?: string;
     strokeWidth?: number;
     opacity?: number;
     fontSize?: number;

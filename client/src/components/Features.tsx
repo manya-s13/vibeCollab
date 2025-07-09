@@ -1,23 +1,23 @@
-import { Video, MonitorUp, Brush } from 'lucide-react'
+import {Users2, SlidersHorizontal, Shapes } from 'lucide-react'
 import {motion} from 'framer-motion'
 
 function Features() {
 
     const cards = [
         {
-            icon: <Brush />,
+            icon: <Users2 />,
             title: "Real-Time Collaboration",
             desc: "Work together on a shared canvas in real time"
         },
         {
-            icon: <Video />,
-            title: "Seamless Video Calls",
-            desc: "Enjoy High-Quality vidoe calls with integarted tools"
+            icon: <SlidersHorizontal />,
+            title: "Customizable Styles",
+            desc: "Change colors, stroke width, fill, opacity, to match your vision perfectly."
         },
         {
-            icon: <MonitorUp />,
-            title: "Screen Sharing",
-            desc: "Easily Share your screen to present your work and get feedback from your team"
+            icon: <Shapes />,
+            title: "Rich Drawing Tools",
+            desc: "Draw with precision using a variety of shapes and freehand drawing."
         },
     ]
 

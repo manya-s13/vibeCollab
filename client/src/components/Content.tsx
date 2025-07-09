@@ -34,10 +34,10 @@ function Content() {
             translateZ: "50px",
             y: translateY
         }}
-        className='w-[50%] rounded-3xl -mt-6 h-[500px] bg-white shadow-2xl p-2 border border-neutral-100'>
+        className='w-[70%] rounded-3xl -mt-6 h-[500px] bg-white shadow-2xl p-2 border border-neutral-100'>
             <div className='h-full w-full rounded-[16px]'>
                 <div className='bg-neutral-100 h-full w-full rounded-[16px]'>
-                    <img src='/meet.png'
+                    <img src='/design.png'
                     alt='demo'
                     height={50}
                     width={50}
